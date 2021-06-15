@@ -1,0 +1,18 @@
+{
+  "name": "newbackendgraphql",
+  "version": "1.0.0",
+  "description": "graphql backend implimentation with apollo server",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "abdulwahab abbas",
+  "license": "ISC",
+  "devDependencies": {
+    "apollo-server": "^2.25.1",
+    "graphql": "^15.5.0",
+    "nodemon": "^2.0.7",
+    "uuid": "^8.3.2"
+  }
+}
