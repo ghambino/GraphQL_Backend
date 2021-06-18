@@ -153,9 +153,10 @@ const resolvers = {
             // const { author } = args;
             if (authors.find(author => author.name !== args.author)) {
                 const newAuthor = {
-                    name: author,
+                    name: args.author,
                     born: null,
-                    bookCount: 1
+                    bookCount: 1,
+                    id: uuid()
                 }
                 authors = authors.concat(newAuthor)
             }
@@ -164,18 +165,25 @@ const resolvers = {
         },
 
         editAuthor: (root, args) => {
-            // if(!args.name) return null;
-            let author = authors.find(auth => auth.name === args.name)
+
+            let author = authors.find(auth => auth.name.toLowerCase() === args.name.toLowerCase())
+
+            let editedAuthor = { ...author, born: args.setBornTo };
 
             if (!author) {
                 throw new UserInputError("Author not found", {
                     invalidArg: args.name
                 })
+            }else if (author) {
+
+                authors = authors.map(aut => aut.name === args.name ? editedAuthor : aut);
+
+
             }
 
-            let editedAuthor = { ...author, born: args.setBornTo };
+          
 
-            authors.map(aut => aut.name === args.name ? editedAuthor : aut)
+            
 
             return editedAuthor
         }
