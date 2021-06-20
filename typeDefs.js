@@ -14,9 +14,20 @@ const { gql } = require('apollo-server');
       bookCount: Int!
       id: ID!
   }
+  type User {
+    username: String!
+    name: String!
+    password: String!
+    favoriteGenre: String!
+    id: ID!
+  }
+  type Token {
+    value: String!
+  }
   type Query {
        bookCount: Int!
        authorCount: Int!
+       me: User
        allBooks(author: String genre: String): [Book]!
        allAuthors: [Author!]!
   }
@@ -28,6 +39,16 @@ const { gql } = require('apollo-server');
      genres: [String!]
    ): Book
    editAuthor(name: String! setBornTo: Int!): Author!
+   createUser (
+     username: String! 
+     name: String! 
+     password: String! 
+     favoriteGenre: String!
+     ): User
+    login(
+      username: String!
+      password: String!
+    ): Token
   }
   `
 

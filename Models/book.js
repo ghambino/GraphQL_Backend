@@ -6,7 +6,7 @@ const bookSchema = new mongoose.Schema({
         type: String,
         unique: true,
         required: true,
-        minLength: 2
+        minLength: 5
     },
     published: {
         type: Number,
