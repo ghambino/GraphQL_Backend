@@ -17,7 +17,7 @@ const resolvers = {
         authorCount: () => Author.find({}).countDocuments(),
         allBooks: async (root, arg) => {
             if (!arg.author && !arg.genre) {
-                return await Book.find({})
+                return await Book.find({}).populate('author')
             }
             else if (arg.author) {
                 const expectedBook = books.filter((book) => book.author === arg.author)
@@ -38,7 +38,8 @@ const resolvers = {
     },
     Mutation: {
 
-        addBook: async (root, args, { currentUser}) => {
+        addBook: async (root, args, { currentUser }) => {
+            console.log(currentUser);
             if (!currentUser){
                 throw new AuthenticationError('not authenticated, make sure youre logged in')
             }
@@ -54,7 +55,7 @@ const resolvers = {
                 let authorId = await Author.findOne({name: author}).select('_id');
 
                 if (!authorId){
-                    const newAuthor = new Author({name: author, born: null});
+                    const newAuthor = new Author({name: author, born: null, bookCount: 1});
                     await newAuthor.save();
                     authorId = newAuthor._id
                 }
@@ -159,7 +160,7 @@ const resolvers = {
 
             if (!user || !correctPassword){
                 throw new UserInputError('invalid login Credentials', {
-                    invalidArgs: args.username
+                    invalidArgs: args
                 })
             }
              const userForToken = {
@@ -168,6 +169,8 @@ const resolvers = {
              }
 
              const Token = jwt.sign(userForToken, process.env.SECRET)
+
+             console.log(Token)
 
              return {
                  value: Token
